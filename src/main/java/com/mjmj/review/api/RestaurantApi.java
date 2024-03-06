@@ -1,12 +1,15 @@
 package com.mjmj.review.api;
 
 import com.mjmj.review.api.request.CreateAndEditRestaurantRequest;
+import com.mjmj.review.model.RestaurantEntity;
+import com.mjmj.review.service.RestaurantService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
 public class RestaurantApi {
+    private  final RestaurantService restaurantService;
 
     @GetMapping("/restaurants")
     public String getRestaurants(){
@@ -23,27 +26,26 @@ public class RestaurantApi {
 
 
     @PostMapping("/restaurant")
-    public String createRestaurant(
+    public void createRestaurant(
             @RequestBody CreateAndEditRestaurantRequest request
             ){
-        return "This is createRestaurant " + request.getName() + " " + request.getAddress()
-                + request.getMenus().get(0).getName() + " " + request.getMenus().get(0).getPrice();
+        restaurantService.createRestaurant(request);
     }
 
 
     @PutMapping("/restaurant/{restaurantId}")
-    public String editRestaurant(
+    public void editRestaurant(
             @PathVariable Long restaurantId,
             @RequestBody CreateAndEditRestaurantRequest request
     ){
-        return "This is editRestaurant" + request.getName() + " " + request.getAddress();
+        restaurantService.editRestaurant(restaurantId,request);
     }
 
 
     @DeleteMapping("/restaurant/{restaurantId}")
-    public String deleteRestaurant(
+    public void deleteRestaurant(
             @PathVariable Long restaurantId
     ){
-        return "This is deleteRestaurant" + restaurantId;
+       restaurantService.deleteRestaurant(restaurantId);
     }
 }
